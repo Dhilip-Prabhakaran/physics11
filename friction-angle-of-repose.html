@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Angle of Repose | Class 11 Physics</title>
+<style>
+:root{--ink:#17233b;--muted:#64748b;--blue:#2563eb;--teal:#0f9d8a;--orange:#f59e0b;--red:#dc4242;--paper:#f4f7fb;--line:#dce4ef}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{background:linear-gradient(120deg,#14294b,#245c91);color:white;padding:24px 18px 28px}
+.wrap{max-width:1000px;margin:auto}
+.eyebrow{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;opacity:.8;font-weight:700}
+h1{font-size:clamp(1.7rem,5vw,2.5rem);margin:6px 0}
+header p{margin:5px 0 0;color:#d9e8fa}
+main{max-width:1000px;margin:18px auto;padding:0 14px 32px;display:grid;gap:16px}
+.card{background:white;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 5px 18px #1c35500b}
+h2{font-size:1.15rem;margin:0 0 14px}
+.scene{background:linear-gradient(#f4faff,#fff);border-radius:14px;overflow:hidden;border:1px solid #e2edf7}
+svg{display:block;width:100%;height:auto;max-height:390px}
+.controls{display:grid;gap:15px;margin-top:17px}
+.control-head{display:flex;justify-content:space-between;gap:12px;align-items:center;font-weight:700}
+.value{font-size:1.35rem;color:var(--blue);font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--blue);height:34px;cursor:pointer}
+button{border:0;border-radius:12px;padding:13px 18px;font-size:1rem;font-weight:750;cursor:pointer;min-height:48px}
+button:focus-visible,input:focus-visible{outline:3px solid #93c5fd;outline-offset:3px}
+.primary{background:var(--blue);color:white}.secondary{background:#eaf1fb;color:#23466f}
+.buttons{display:flex;gap:10px;flex-wrap:wrap}
+.status{padding:13px 14px;border-radius:12px;font-weight:750;line-height:1.4;background:#e9f7f3;color:#087a67}
+.status.sliding{background:#fff0ed;color:#b52d2d}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.metric{background:#f5f8fc;border:1px solid #e5ebf3;border-radius:12px;padding:12px}
+.metric small{display:block;color:var(--muted);font-size:.78rem}.metric strong{font-size:1.12rem;display:block;margin-top:4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.formula{background:#f5f8fc;padding:12px;border-radius:12px;margin:8px 0;font-size:1.05rem;font-weight:700;text-align:center}
+.term{margin:10px 0;color:#34445c;line-height:1.5}.term b{color:var(--ink)}
+.note{font-size:.9rem;color:var(--muted);line-height:1.5}
+@media(max-width:650px){main{margin-top:12px}.card{padding:15px}.grid2{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.metrics .metric:last-child{grid-column:span 2}.buttons button{flex:1}.scene svg{min-height:210px}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="eyebrow">Class 11 Physics · Unit: Friction</div>
+  <h1>Angle of Repose</h1>
+  <p>Explore how an inclined plane reaches the point where a block just begins to slide.</p>
+</div></header>
+<main>
+<section class="card">
+  <h2>Interactive experiment</h2>
+  <div class="scene">
+    <svg id="diagram" viewBox="0 0 600 360" role="img" aria-label="A block resting on an adjustable inclined plane">
+      <defs>
+        <linearGradient id="slopeFill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#c9d9e9"/><stop offset="1" stop-color="#9fb8d0"/></linearGradient>
+        <filter id="shadow"><feDropShadow dx="0" dy="4" stdDeviation="4" flood-opacity=".18"/></filter>
+      </defs>
+      <path d="M0 305 H600" stroke="#9eb2c7" stroke-width="2"/>
+      <polygon id="plane" points="80,305 400,305 400,305" fill="url(#slopeFill)" stroke="#6d8ba9" stroke-width="3"/>
+      <line id="surface" x1="80" y1="305" x2="400" y2="305" stroke="#54738f" stroke-width="5" stroke-linecap="round"/>
+      <g id="block" filter="url(#shadow)">
+        <rect x="-23" y="-23" width="46" height="46" rx="6" fill="#f2a93b" stroke="#a76612" stroke-width="3"/>
+        <path d="M-10 -7h20M-10 2h20" stroke="#fff4d9" stroke-width="3" stroke-linecap="round"/>
+      </g>
+      <path id="angleArc" d="" fill="none" stroke="#2563eb" stroke-width="3"/>
+      <text id="angleLabel" x="125" y="285" fill="#1d4ed8" font-size="17" font-weight="700">θ</text>
+      <text x="25" y="28" fill="#52677e" font-size="15">Inclined plane</text>
+      <g id="motionMark" opacity="0">
+        <path d="M0 0 l-14 -8 M0 0 l-14 8" stroke="#dc4242" stroke-width="3" stroke-linecap="round"/>
+      </g>
+    </svg>
+  </div>
+  <div class="controls">
+    <div>
+      <div class="control-head"><label for="angle">Inclination angle (θ)</label><output class="value" id="angleOut">20°</output></div>
+      <input id="angle" type="range" min="0" max="50" step="0.5" value="20" aria-label="Change inclination angle">
+      <div class="note">Move the slider to increase or decrease the slope.</div>
+    </div>
+    <div class="buttons">
+      <button class="primary" id="criticalBtn">Set angle of repose</button>
+      <button class="secondary" id="resetBtn">Reset experiment</button>
+    </div>
+    <div id="status" class="status" aria-live="polite">The block is at rest. Static friction balances the downslope pull.</div>
+  </div>
+  <div class="metrics">
+    <div class="metric"><small>Current angle (θ)</small><strong id="mAngle">20°</strong></div>
+    <div class="metric"><small>Angle of repose (θᵣ)</small><strong id="mCritical">26.6°</strong></div>
+    <div class="metric"><small>Coefficient (μₛ)</small><strong id="mMu">0.50</strong></div>
+  </div>
+</section>
+<div class="grid2">
+  <section class="card">
+    <h2>What is the angle of repose?</h2>
+    <p class="term">The <b>angle of repose</b> is the smallest angle of inclination of a plane with the horizontal at which a body placed on it just begins to slide down.</p>
+    <div class="formula">tan θᵣ = μₛ</div>
+    <p class="note">At the limiting condition, static friction reaches its maximum value. If the angle increases beyond θᵣ, the block slides.</p>
+  </section>
+  <section class="card">
+    <h2>Forces on the block</h2>
+    <p class="term"><b>Weight (mg):</b> acts vertically downward.</p>
+    <p class="term"><b>Normal reaction (N):</b> acts perpendicular to the plane.</p>
+    <p class="term"><b>Static friction (fₛ):</b> acts up the plane, opposing the tendency to slide.</p>
+    <div class="formula">mg sin θ = fₛ</div>
+    <div class="formula">N = mg cos θ</div>
+    <div class="formula">At limiting state: μₛ = tan θᵣ</div>
+  </section>
+</div>
+<section class="card">
+  <h2>Try these observations</h2>
+  <p class="term">1. Start below the angle of repose. What keeps the block from sliding?</p>
+  <p class="term">2. Increase the angle until the block just starts moving. Note this critical angle.</p>
+  <p class="term">3. Increase the angle further. What happens to the block?</p>
+  <p class="note"><b>Model assumption:</b> The coefficient of static friction is fixed at μₛ = 0.50 for this experiment. The simulation uses the ideal limiting-friction model.</p>
+</section>
+</main>
+<script>
+const angle = document.getElementById('angle');
+const angleOut = document.getElementById('angleOut');
+const statusBox = document.getElementById('status');
+const block = document.getElementById('block');
+const plane = document.getElementById('plane');
+const surface = document.getElementById('surface');
+const arc = document.getElementById('angleArc');
+const angleLabel = document.getElementById('angleLabel');
+const mu = 0.50;
+const repose = Math.atan(mu) * 180 / Math.PI;
+let currentAngle = Number(angle.value);
+let slideDistance = 0;
+let animationFrame = null;
+
+function draw(){
+  currentAngle = Number(angle.value);
+  const rad = currentAngle * Math.PI / 180;
+  const x0 = 80, y0 = 305, length = 320;
+  const x1 = x0 + length * Math.cos(rad);
+  const y1 = y0 - length * Math.sin(rad);
+  plane.setAttribute('points', `${x0},${y0} ${x1},${y1} ${x1},${y0}`);
+  surface.setAttribute('x1',x0); surface.setAttribute('y1',y0);
+  surface.setAttribute('x2',x1); surface.setAttribute('y2',y1);
+  const isSliding = currentAngle > repose + 0.01;
+  if (!isSliding) slideDistance = 0;
+  const along = isSliding ? 145 + slideDistance : 145;
+  const bx = x0 + along * Math.cos(rad);
+  const by = y0 - along * Math.sin(rad);
+  block.setAttribute('transform',`translate(${bx} ${by}) rotate(${-currentAngle})`);
+  const arcR = 48;
+  const ax = x0 + arcR, ay = y0;
+  const ex = x0 + arcR*Math.cos(rad), ey = y0 - arcR*Math.sin(rad);
+  arc.setAttribute('d',`M ${ax} ${ay} A ${arcR} ${arcR} 0 0 0 ${ex} ${ey}`);
+  angleLabel.setAttribute('x',x0+58); angleLabel.setAttribute('y',y0-7);
+  angleOut.textContent = currentAngle.toFixed(1).replace('.0','') + '°';
+  document.getElementById('mAngle').textContent = angleOut.textContent;
+  document.getElementById('mCritical').textContent = repose.toFixed(1)+'°';
+  document.getElementById('mMu').textContent = mu.toFixed(2);
+  if (currentAngle < repose - 0.01) {
+    statusBox.className = 'status';
+    statusBox.textContent = 'At rest: static friction balances the component of weight pulling the block down the plane.';
+  } else if (Math.abs(currentAngle-repose) <= 0.01) {
+    statusBox.className = 'status';
+    statusBox.textContent = 'Limiting equilibrium: the block is just about to slide. Static friction is at its maximum value.';
+  } else {
+    statusBox.className = 'status sliding';
+    statusBox.textContent = 'Sliding! The downslope component of weight exceeds the maximum static friction.';
+  }
+}
+function animateSlide(){
+  if (animationFrame) cancelAnimationFrame(animationFrame);
+  slideDistance = 0;
+  const start = performance.now();
+  function step(now){
+    if (Number(angle.value) <= repose) { draw(); return; }
+    slideDistance = Math.min(75, (now-start)*0.12);
+    draw();
+    if(slideDistance < 75) animationFrame = requestAnimationFrame(step);
+  }
+  animationFrame = requestAnimationFrame(step);
+}
+angle.addEventListener('input',()=>{ if(animationFrame) cancelAnimationFrame(animationFrame); draw(); if(Number(angle.value)>repose) animateSlide(); });
+document.getElementById('criticalBtn').addEventListener('click',()=>{angle.value=repose.toFixed(1);if(animationFrame)cancelAnimationFrame(animationFrame);draw();});
+document.getElementById('resetBtn').addEventListener('click',()=>{if(animationFrame)cancelAnimationFrame(animationFrame);angle.value=20;slideDistance=0;draw();});
+draw();
+</script>
+</body>
+</html>
